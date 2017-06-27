@@ -260,7 +260,10 @@ function getRoomUserKeys( room ) {
  * @return void
  */
 function emitRoomDataToUsers( actionType, room, userKey ) {
+	// get room data
 	var roomData = createRoomData( actionType, room, userKey );
+
+	/// emit room data to room
 	io.emit(room.name, roomData);
 }
 
@@ -275,7 +278,10 @@ function emitRoomDataToUsers( actionType, room, userKey ) {
  * @return void
  */
 function emitRoomDataToSocket( actionType, room, userKey, socket ) {
+	// get room data
 	var roomData = createRoomData( actionType, room, userKey );
+
+	// emit data to socket
 	socket.emit(room.name, roomData);
 }
 
@@ -340,6 +346,7 @@ function cleanUpGuests() {
  */
 function setRemoveUserTimeout( roomIndexCounter, clientIndexCounter ) {
 	setTimeout(function () { // wait to see if user comes back
+		// remove user from the room
 		removeUser( roomIndexCounter, clientIndexCounter );
 	}, clearGuestsTimeInterval);
 }
