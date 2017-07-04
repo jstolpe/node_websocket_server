@@ -1,5 +1,8 @@
 # node_websocket_server
 
+[Allows socket connection to server]
+~$ iptables -I INPUT 1 -i eth0 -p tcp --dport [socketConnectionPortNumber] -j ACCEPT
+
 ==========================================================================
     
                   (           (        )   (               )   (     (         
