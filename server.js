@@ -1,23 +1,23 @@
 // socket io setup
-var app = require('express')();
+var app = require( 'express' )();
 
 // used for parsing html body
-var bodyParser = require('body-parser');
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+var bodyParser = require( 'body-parser' );
+app.use( bodyParser.urlencoded( { extended: false } ) );
+app.use( bodyParser.json() );
 
 // http request
-var http = require('http').Server(app);
+var http = require( 'http' ).Server( app );
 
 // socket lib
-var io = require('socket.io')(http);
+var io = require( 'socket.io' )( http );
 
 // hold all the rooms that are currently open
 var liveRooms = [];
 
 try { // include defines.js which holds server specific settings
 	// include defines.js where you set your server specific settings
-	var defines = require('./defines');
+	var defines = require( './defines' );
 
 	// what hosts can access this server
 	var allowedHosts = defines.allowedHosts;
@@ -61,7 +61,7 @@ if ( allowedHosts ) { // only allow connections from certain hosts
  *
  * @return void	
  */
-io.on('connection', function(socket) { // called on new connection
+io.on('connection', function( socket ) { // called on new connection
 	/**
 	 * Join a room
 	 *	
@@ -69,7 +69,7 @@ io.on('connection', function(socket) { // called on new connection
 	 *
 	 * @return void	
 	 */
-	socket.on('room', function(room) { // called whenever a users joins any room
+	socket.on( 'room', function( room ) { // called whenever a users joins any room
     	// join the room
     	socket.join( room.name );
 
@@ -82,7 +82,7 @@ io.on('connection', function(socket) { // called on new connection
 
     		if ( userIndex != -1 ) { // user is already in the room
     			// add user socket id to the users array of socket ids
-    			liveRooms[roomIndex].clients[userIndex].socketIds.push(socket.id);
+    			liveRooms[roomIndex].clients[userIndex].socketIds.push( socket.id );
 
 				// emit room data to user who just connected
 				emitRoomDataToSocket( 'user_join', liveRooms[roomIndex], room.userKey, socket );
@@ -105,10 +105,10 @@ io.on('connection', function(socket) { // called on new connection
     		};
 
     		// add room to rooms array
-    		liveRooms.push(newRoom);
+    		liveRooms.push( newRoom );
 
     		// emit room data to users
-    		emitRoomDataToUsers( 'user_join', newRoom, room.userKey);
+    		emitRoomDataToUsers( 'user_join', newRoom, room.userKey );
     	}
 	});
 
@@ -143,7 +143,7 @@ io.on('connection', function(socket) { // called on new connection
 });
 
 // initialize cleanup
-setTimeout(cleanUpGuests, clearGuestsTimeInterval);
+setTimeout( cleanUpGuests, clearGuestsTimeInterval );
 
 /**
  * Post data to rooms
@@ -153,13 +153,13 @@ setTimeout(cleanUpGuests, clearGuestsTimeInterval);
  *
  * @return void	
  */
-app.post('/broadcast', function(req, res){ // called when broadcast gets a POST
+app.post('/broadcast', function( req, res ){ // called when broadcast gets a POST
 	if ( validPost( req ) ) { // is valid post
-		io.emit(req.body.room_name, req.body);
+		io.emit( req.body.room_name, req.body );
 	}
 
 	// make node server happy
-	res.sendStatus(200);
+	res.sendStatus( 200 );
 	res.end();
 });
 
@@ -170,7 +170,7 @@ app.post('/broadcast', function(req, res){ // called when broadcast gets a POST
  *
  * @return void	
  */
-http.listen(portToListenOn, function(){ 
+http.listen( portToListenOn, function(){ 
 	// listen for POSTs on this port
 });
 
@@ -270,7 +270,7 @@ function emitRoomDataToUsers( actionType, room, userKey ) {
 	var roomData = createRoomData( actionType, room, userKey );
 
 	/// emit room data to room
-	io.emit(room.name, roomData);
+	io.emit( room.name, roomData );
 }
 
 /**
@@ -288,7 +288,7 @@ function emitRoomDataToSocket( actionType, room, userKey, socket ) {
 	var roomData = createRoomData( actionType, room, userKey );
 
 	// emit data to socket
-	socket.emit(room.name, roomData);
+	socket.emit( room.name, roomData );
 }
 
 /**
@@ -339,7 +339,7 @@ function cleanUpGuests() {
     }
 
     // set timeout for clearing out guests from rooms
-    setTimeout(cleanUpGuests, clearGuestsTimeInterval);
+    setTimeout( cleanUpGuests, clearGuestsTimeInterval );
 }
 
 /**
