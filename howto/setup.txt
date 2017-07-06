@@ -33,6 +33,11 @@ Step 3: Create a defines.js file in node_websocket_server and place the followin
 			nodeServerHeaderKey: 'headerKeyToVerifyIncomingRequests',
 
 			/**
+			 * Time interval to remove a user from rooms on the server
+			 */
+			removeUserTimeInterval: 10000,
+
+			/**
 			 * Time interval to clear guests from server rooms
 			 */
 			clearGuestsTimeInterval: 10000
