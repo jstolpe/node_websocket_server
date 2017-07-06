@@ -7,7 +7,7 @@ handling any traffic trying to connect to it on the port specified.
 See the howto/ folder for further instructions on setting up and running the
 node websocket server.
 
-[Front End Code]
+[Front End Repo]
 https://github.com/jstolpe/node_websocket_server_front
 
 ==========================================================================
