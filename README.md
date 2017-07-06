@@ -1,6 +1,14 @@
 # node_websocket_server
 
-See the howto/ folder for further instructions.
+This repo contains files needed to run a node websocket server. The node
+websocket server runs in the background on a server listening for and
+handling any traffic trying to connect to it on the port specified.
+
+See the howto/ folder for further instructions on setting up and running the
+node websocket server.
+
+[Front End Code]
+https://github.com/jstolpe/node_websocket_server_front
 
 ==========================================================================
     

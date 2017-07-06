@@ -28,6 +28,9 @@ try { // include defines.js which holds server specific settings
 	// header secrete to pass along when hitting this server
 	var nodeServerHeaderKey = defines.nodeServerHeaderKey;
 
+	// try and remove user after disconnect
+	var clearGuestsTimeInterval = defines.removeUserTimeInterval;
+
 	// how often to clear out guests
 	var clearGuestsTimeInterval = defines.clearGuestsTimeInterval;
 } catch( ex ) { // if no defines.js exists, default to super secure mode! jk...go create defines.js now!  
@@ -39,6 +42,9 @@ try { // include defines.js which holds server specific settings
 
 	// default to no secret for validating requests to this server
 	var nodeServerHeaderKey = '';
+
+	// default time interval for server to try and remove a user
+	var removeUserTimeInterval = 10000;
 
 	// default time interval for server to try and clear guests out of rooms
 	var clearGuestsTimeInterval = 10000;
@@ -348,7 +354,7 @@ function setRemoveUserTimeout( roomIndexCounter, clientIndexCounter ) {
 	setTimeout(function () { // wait to see if user comes back
 		// remove user from the room
 		removeUser( roomIndexCounter, clientIndexCounter );
-	}, clearGuestsTimeInterval);
+	}, removeUserTimeInterval);
 }
 
 /**

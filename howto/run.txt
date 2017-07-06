@@ -12,6 +12,12 @@ Step 2: Run the server.js file which is the node websocket server.
 [Start the node websocket server and keep it running as background process]
 ~$ nohup node server.js &
 
+Step 3: Now the server is running, it is time to connect to it and get live
+		updates going in the browser on the front end!
+
+		[FRONT END REPO]
+		https://github.com/jstolpe/node_websocket_server_front
+
 ==========================================================================
 
               (           (        )   (               )   (     (         

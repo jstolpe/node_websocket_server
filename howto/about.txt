@@ -1,0 +1,68 @@
+About the node websocket server
+
+==========================================================================
+
+[Overview]
+This repo contains files needed to run a node websocket server. The node
+websocket server runs in the background on a server listening for and
+handling any traffic trying to connect to it on the port specified.
+
+
+[Rooms]
+Rooms are created on the front end but the node websocket server manages them. 
+Rooms are used to separate users into groups for targeting with specific
+information. When creating a connection to the node websocket server for a
+user, a room must be specified. Every user that connects will exist inside 
+a room.
+
+Example: You have microsoft_stock.php and apple_stock.php. Each webpage 
+simply displays the stock price and it updates in real time. On the
+microsoft_stock.php webpage users would connect to the "microsoft_stock" 
+room on the node websocket server. On the apple_stock.php webpage users 
+would connect to the "apple_stock" room on the node websocket server. This
+way your application can now push out the microsoft stock price to the 
+"microsoft_stock" room, and the apple stock price to the "apple_stock" room.
+Users in these rooms will get the price and it will updated in their browser
+in real time.
+
+You can create rooms as you wish. Rooms are differntiated by their names.
+Rooms get created when the first user connects. Rooms get removed when the 
+last users exits.
+
+
+[Remove User]
+This function is set to run X seconds from when the user connects. It does
+not run immediatly and is delayed the X seconds to give the user time to 
+reconnect. If the user reconnets within X seconds they are not removed.
+
+Example: On home.php there is a Users Online counter. If one user connects to 
+home.php the counter would display "1". If a second users connects to home.php
+the counter would display "2". One of the users refreshes the page and the
+other user sees the counter update from "2", to "1", and back to "2" again
+once the refresh is over. The remove user function is delayed to prevent the 
+counter from bouncing around. With the remove user function being delayed, 
+when the one user clicks refresh, the second user never sees the counter move
+because the user came back within the X seconds preventing the remove user
+function from running.
+
+
+[Guest Cleanup]
+If a user comes to a website and is not logged in, they get connected to the 
+node websocket server as a guest. Once they login, they connect to the node
+websocket server again with their user key. Now we have two users connected,
+the guest, and the logged in user. The guest users needs to be removed 
+becuase they just logged in. This is why the guest cleanup function runs 
+every X seconds. It removes guest connections who have logged in. This way
+the node websocket server has an accurate and up to date list of exactly who 
+is connected to the node websocket server at all times.
+
+==========================================================================
+
+              (           (        )   (               )   (     (         
+              )\ )  *   ) )\ )  ( /(   )\ )  *   )  ( /(   )\ )  )\ )      
+   (      (  (()/(` )  /((()/(  )\()) (()/(` )  /(  )\()) (()/( (()/( (    
+   )\     )\  /(_))( )(_))/(_))((_)\   /(_))( )(_))((_)\   /(_)) /(_)))\   
+  ((_) _ ((_)(_)) (_(_())(_))   _((_) (_)) (_(_())   ((_) (_))  (_)) ((_)  
+ _ | || | | |/ __||_   _||_ _| | \| | / __||_   _|  / _ \ | |   | _ \| __| 
+| || || |_| |\__ \  | |   | |  | .` | \__ \  | |   | (_) || |__ |  _/| _|  
+ \__/  \___/ |___/  |_|  |___| |_|\_| |___/  |_|    \___/ |____||_|  |___|
