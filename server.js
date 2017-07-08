@@ -57,7 +57,7 @@ try { // include defines.js which holds server specific settings
 	var nodeServerHeaderKey = defines.nodeServerHeaderKey;
 
 	// try and remove user after disconnect
-	var clearGuestsTimeInterval = defines.removeUserTimeInterval;
+	var removeUserTimeInterval = defines.removeUserTimeInterval;
 
 	// how often to clear out guests
 	var clearGuestsTimeInterval = defines.clearGuestsTimeInterval;
