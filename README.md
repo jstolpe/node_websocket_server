@@ -1,4 +1,4 @@
-# node_websocket_server
+# node_websocket_server - https://github.com/jstolpe/node_websocket_server
 
 This repo contains files needed to run a node websocket server. The node
 websocket server runs in the background on a web server listening for and
