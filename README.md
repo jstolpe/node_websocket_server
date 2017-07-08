@@ -1,5 +1,7 @@
 # node_websocket_server - https://github.com/jstolpe/node_websocket_server
 
+Live Demo: http://justinstolpe.com/node_websocket_server_front/example/
+
 This repo contains files needed to run a node websocket server. The node
 websocket server runs in the background on a web server listening for and
 handling any traffic trying to connect to the node websocket server on 
