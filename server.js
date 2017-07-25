@@ -192,6 +192,25 @@ app.post('/broadcast', function( req, res ){ // called when broadcast gets a POS
 });
 
 /**
+ * Web path for getting live rooms data
+ *	
+ * @param Array req
+ * @param Array res
+ *
+ * @return void	
+ */
+app.get('/getliverooms', function ( req, res ) {
+	if ( validPost( req ) ) { // make sure we have a valid request with secret key
+ 	   	res.send( liveRooms );
+	} else { // not a valid secret key in the headers of the request
+		res.send([{
+			status: 'fail',
+			message: 'No data for you!'
+		}]);
+	}
+});
+
+/**
  * Listen on this port
  *	
  * @param void
