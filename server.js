@@ -192,6 +192,26 @@ app.post('/broadcast', function( req, res ){ // called when broadcast gets a POS
 });
 
 /**
+ * Post data to multiple rooms
+ *	
+ * @param Array req
+ * @param Array res
+ *
+ * @return void	
+ */
+app.post('/multibroadcast', function( req, res ){ // called when broadcast gets a POST
+	if ( validPost( req ) ) { // is valid post
+		for ( var i = 0; i < req.body.length; i++ ) { // emit data to each room
+			io.emit( req.body[i].room_name, req.body[i] );
+		}
+	}
+
+	// make node server happy
+	res.sendStatus( 200 );
+	res.end();
+});
+
+/**
  * Web path for getting live rooms data
  *	
  * @param Array req
