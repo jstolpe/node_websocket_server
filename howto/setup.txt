@@ -17,6 +17,19 @@ Step 3: Create a defines.js file in node_websocket_server and place the followin
 		 */
 		module.exports = {
 			/**
+		 	 * Connection type HTTP|HTTPS
+	 		 */
+			connectionType: 'HTTP',
+
+			/**
+			 * Connection options needed for https
+			 */
+			connectionHTTPSOptions: {
+			    key: '/path/to/key.key', // private key file
+			    cert: '/path/to/cert.crt', // certificate file
+			},
+
+			/**
 			 * Comma separated string of hosts allowed to connect to the node server
 			 */
 			allowedHosts: 'http://localhost:*, http://localhost2:*'
