@@ -34,18 +34,18 @@ var bodyParser = require( 'body-parser' );
 app.use( bodyParser.urlencoded( { extended: false } ) );
 app.use( bodyParser.json() );
 
-// http request
-var http = require( 'http' ).Server( app );
-
-// socket lib
-var io = require( 'socket.io' )( http );
-
 // hold all the rooms that are currently open
 var liveRooms = [];
 
 try { // include defines.js which holds server specific settings
 	// include defines.js where you set your server specific settings
 	var defines = require( './defines' );
+
+	// http/https
+	var connectionType = defines.connectionType;
+
+	// get https options from defines
+	var connectionHTTPSOptions = defines.connectionHTTPSOptions;
 
 	// what hosts can access this server
 	var allowedHosts = defines.allowedHosts;
@@ -62,6 +62,12 @@ try { // include defines.js which holds server specific settings
 	// how often to clear out guests
 	var clearGuestsTimeInterval = defines.clearGuestsTimeInterval;
 } catch( ex ) { // if no defines.js exists, default to super secure mode! jk...go create defines.js now!  
+	// http/https default to http
+	var connectionType = 'HTTP';
+
+	// not using https so options are empty
+	var connectionHTTPSOptions = {};
+
 	// allow access can access this server! gg!
 	var allowedHosts = '';
 
@@ -78,8 +84,51 @@ try { // include defines.js which holds server specific settings
 	var clearGuestsTimeInterval = 10000;
 }
 
+if ( 'HTTP' == connectionType ) { // setup HTTP server
+	// create http server
+	var http = require( 'http' ).Server( app ).listen( portToListenOn, function(){});
+
+	// open socket io
+	var io = require( 'socket.io' )( http );
+} else if ( 'HTTPS' == connectionType ) { // setup HTTPS server
+	// require file system
+	var fs = require( 'fs' );
+
+	// require https
+	var https = require('https');
+
+	// options passed when setting up https server
+	var httpsOptions = {};
+
+	if ( 'key' in connectionHTTPSOptions ) { // get private key file
+		httpsOptions.key = fs.readFileSync( connectionHTTPSOptions.key ); 
+	}
+
+	if ( 'cert' in connectionHTTPSOptions ) { // get cert file
+		httpsOptions.cert = fs.readFileSync( connectionHTTPSOptions.cert ); 
+	}
+
+	if ( 'ca' in connectionHTTPSOptions ) { // get ca if provided
+		httpsOptions.ca = fs.readFileSync( connectionHTTPSOptions.ca ); 
+	}
+
+	if ( 'requestCert' in connectionHTTPSOptions ) { // set option
+		httpsOptions.requestCert = connectionHTTPSOptions.requestCert; 
+	}
+
+	if ( 'requestCert' in connectionHTTPSOptions ) { // set option
+		httpsOptions.rejectUnauthorized = connectionHTTPSOptions.rejectUnauthorized; 
+	}
+
+	// setup server
+	var server = https.createServer( httpsOptions ,app ).listen( portToListenOn );
+
+	// open socket io
+	var io = require( 'socket.io' ).listen(server);
+}
+
 if ( allowedHosts ) { // only allow connections from certain hosts
-	io.set('origins', allowedHosts);
+	io.set( 'origins', allowedHosts );
 }
 
 /**
@@ -228,17 +277,6 @@ app.get('/getliverooms', function ( req, res ) {
 			message: 'No data for you!'
 		}]);
 	}
-});
-
-/**
- * Listen on this port
- *	
- * @param void
- *
- * @return void	
- */
-http.listen( portToListenOn, function(){ 
-	// listen for POSTs on this port
 });
 
 /**
