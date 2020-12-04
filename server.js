@@ -95,7 +95,7 @@ if ( 'HTTP' == connectionType ) { // setup HTTP server
 	var fs = require( 'fs' );
 
 	// require https
-	var https = require('https');
+	var https = require( 'https' );
 
 	// options passed when setting up https server
 	var httpsOptions = {};
@@ -121,14 +121,14 @@ if ( 'HTTP' == connectionType ) { // setup HTTP server
 	}
 
 	// setup server
-	var server = https.createServer( httpsOptions ,app ).listen( portToListenOn );
+	var server = https.createServer( httpsOptions, app ).listen( portToListenOn );
 
 	// open socket io
-	var io = require( 'socket.io' ).listen(server);
-}
-
-if ( allowedHosts ) { // only allow connections from certain hosts
-	io.set( 'origins', allowedHosts );
+	var options = {
+		cors: true,
+		origins: allowedHosts
+	}
+	var io = require( 'socket.io' )( server, options );
 }
 
 /**
